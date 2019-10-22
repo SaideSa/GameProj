@@ -48,7 +48,7 @@ public class Game_Panel extends JPanel implements MouseListener, A_GraphicSystem
 	public void draw(A_GameObject obj) {
 		Graphics gra = this.getGraphics();
 		gra.setColor(COLOR_obj);
-		gra.fillOval((int) obj.x-RADIUS_obj, (int)obj.y-RADIUS_obj, RADIUS_obj*2, RADIUS_obj*2);
+		gra.fillRect((int) obj.x-RADIUS_obj, (int)obj.y-RADIUS_obj, RADIUS_obj*2, RADIUS_obj*2);
 	}
 
 	public void redraw() { //redraw the whole updated screen

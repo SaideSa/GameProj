@@ -25,6 +25,7 @@ public abstract class A_World {
 		while(true) {
 			// calculate elapsed time
 			//
+		
 			long currentTick = System.currentTimeMillis();
 			double diffSeconds = (currentTick-lastTick)/1000.0;
 			lastTick = currentTick;
