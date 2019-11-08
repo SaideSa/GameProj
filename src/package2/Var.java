@@ -22,6 +22,8 @@ public class Var {
 	
 	static BufferedImage ih1,ih2;
 	static BufferedImage ispieler;
+	static BufferedImage ischlüssel;
+	static BufferedImage icactus;
 	
 	public Var() {
 		try {
@@ -30,6 +32,10 @@ public class Var {
 			ih2 = ImageIO.read(new File ("rsc2/hintergrund1.png"));
 			//Spieler
 			ispieler = ImageIO.read(new File ("rsc2/spieler.png"));
+			//Schlüssel
+			ischlüssel = ImageIO.read(new File("rsc2/key.png"));
+			//Kaktus
+			icactus = ImageIO.read(new File("rsc2/cactus.png"));
 		}catch(IOException e) {
 			e.printStackTrace();
 			System.out.println("Bilder konnten nicht geladen werden");

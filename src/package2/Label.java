@@ -21,6 +21,10 @@ public class Label extends JLabel {
 		
 		g.drawImage(Var.ispieler, Var.x, Var.y, 50, 80, null); //spieler hat Größe 50x80s
 		
+		g.drawImage(Var.ischlüssel, 20, 20, 50, 25, null);
+		
+		g.drawImage(Var.icactus, 500, 100, 100, 150, null);
+		
 		repaint();
 	}
 
