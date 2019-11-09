@@ -4,6 +4,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -99,6 +100,7 @@ public class Board extends JPanel{
 		}
 		//Fenster schlieﬂt sich bei Kollision mit Kaktus
 		if(cactus.getRect().intersects(player.getRect())) {
+			JOptionPane.showMessageDialog(null,"Game Over!");
 			System.exit(0);
 		}
 	}
