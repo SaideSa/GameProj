@@ -116,8 +116,19 @@ public class Board extends JPanel {
 	public void cactusMove() {
 		// Kaktus soll immer in die Richtung des Spielers laufen (funktioniert noch
 		// nicht)
-		cactus.setXDir((player.getX() - cactus.getX()) / 150);
-		cactus.setYDir((player.getY() - cactus.getY()) / 150);
+		int X = player.getX() - cactus.getX();
+		int Y = player.getY() - cactus.getY();
+		if(X != 0) {
+			cactus.setXDir(X / Math.abs(X));
+		}else {
+			cactus.setXDir(0);
+		}
+		if(Y != 0) {
+			cactus.setYDir(Y / Math.abs(Y));
+		}else{
+			cactus.setYDir(0);
+		}
+		
 		cactus.move();
 	}
 	
