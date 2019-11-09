@@ -3,6 +3,7 @@ package prototyp;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import java.util.Random;
 import java.util.Timer;
@@ -27,6 +28,7 @@ public class Board extends JPanel {
 		keys = new Key[3];
 		this.setBackground(Color.ORANGE);
 		this.add(label.keyCounter);
+		this.add(label.winLoss);
 
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new ScheduleTask(), 1000, 10);
@@ -110,7 +112,8 @@ public class Board extends JPanel {
 			}
 		}
 		if (cactus.getRect().intersects(player.getRect())) {
-			if(JOptionPane.showConfirmDialog(null, "Game Over! Restart?", "WARNING", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+			if(JOptionPane.showConfirmDialog(null, "Game Over! Restart?", "LOSER", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+				label.lose();
 				gameInit();
 			}else {
 				System.exit(0);
@@ -140,7 +143,8 @@ public class Board extends JPanel {
 	public void checkWin() {
 		//Wenn man drei Schlüssel gesammelt hat komm ein Pop up
 		if(label.keys == 3) {
-			if(JOptionPane.showConfirmDialog(null, "You Win! Restart?", "WARNING", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+			if(JOptionPane.showConfirmDialog(null, "You Win! Restart?", "WINNER", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+				label.win();
 				gameInit();
 			}else {
 				System.exit(0);
