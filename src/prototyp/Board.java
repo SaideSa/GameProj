@@ -5,7 +5,6 @@ import java.awt.event.KeyEvent;
 import javax.swing.JPanel;
 import javax.swing.JOptionPane;
 
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.awt.Color;
@@ -19,7 +18,6 @@ public class Board extends JPanel {
 	Player player;
 	Key[] keys;
 	Label label = new Label();
-	Random rand = new Random();
 
 	public Board() {
 
@@ -39,9 +37,9 @@ public class Board extends JPanel {
 	public void gameInit() {
 		// neuer Kaktus
 		cactus = new Cactus();
-		// neuer Schlüssel an der Position 700 / 500
+		// drei Schlüssel an Random Positionen (funktioniert nicht immer)
 		for (int i = 0; i <= 2; i++) {
-			keys[i] = new Key(rand.nextInt((800 - 2) + 1) + 2, rand.nextInt((600 - 2) + 1) + 2);
+			keys[i] = new Key((int)Math.random()*800, (int)Math.random()*600);
 		}
 		// neuer Spieler
 		player = new Player();
@@ -117,8 +115,8 @@ public class Board extends JPanel {
 	public void cactusMove() {
 		// Kaktus soll immer in die Richtung des Spielers laufen (funktioniert noch
 		// nicht)
-		cactus.setXDir((player.getX() - cactus.getX()) / 100);
-		cactus.setYDir((player.getY() - cactus.getY()) / 100);
+		cactus.setXDir((player.getX() - cactus.getX()) / 150);
+		cactus.setYDir((player.getY() - cactus.getY()) / 150);
 		cactus.move();
 	}
 	
