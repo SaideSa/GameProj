@@ -3,113 +3,131 @@ package prototyp;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JPanel;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 
-public class Board extends JPanel{
-	
+public class Board extends JPanel {
+
 	Timer timer;
 	Cactus cactus;
 	Player player;
-	Key key;
+	Key[] keys;
 	Label label = new Label();
-	
+	Random rand = new Random();
+
 	public Board() {
-		
+
 		this.addKeyListener(new TAdapter());
 		this.setFocusable(true);
+		keys = new Key[3];
 		this.setBackground(Color.ORANGE);
 		this.add(label.keyCounter);
-		
+
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new ScheduleTask(), 1000, 10);
-		
+
 		gameInit();
 
-		
 	}
-	
+
 	public void gameInit() {
-		//neuer Kaktus
+		// neuer Kaktus
 		cactus = new Cactus();
-		//neuer Schlüssel an der Position 700 / 500
-		key = new Key(700, 500);
-		//neuer Spieler
+		// neuer Schlüssel an der Position 700 / 500
+		for (int i = 0; i <= 2; i++) {
+			keys[i] = new Key(rand.nextInt((800 - 2) + 1) + 2, rand.nextInt((600 - 2) + 1) + 2);
+		}
+		// neuer Spieler
 		player = new Player();
 	}
-	
+
 	public void paint(Graphics g) {
 		super.paint(g);
-		
-		//Kaktus zeichnen
+
+		// Kaktus zeichnen
 		g.drawImage(cactus.getImage(), cactus.getX(), cactus.getY(), cactus.getWidth(), cactus.getHeight(), this);
-		//Spieler zeichnen
+		// Spieler zeichnen
 		g.drawImage(player.getImage(), player.getX(), player.getY(), player.getWidth(), player.getHeight(), this);
-		//Schlüssel nur zeichnen wenn er noch nicht eingesammelt wurde
-		if(key.isVisible()) {
-			g.drawImage(key.getImage(), key.getX(), key.getY(), key.getWidth(), key.getHeight(), this);
+		// Schlüssel nur zeichnen wenn er noch nicht eingesammelt wurde
+		for (int i = 0; i <= 2; i++) {
+			if (keys[i].isVisible()) {
+				g.drawImage(keys[i].getImage(), keys[i].getX(), keys[i].getY(), keys[i].getWidth(), keys[i].getHeight(),
+						this);
+			}
 		}
-		
-		
+
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
 	}
-	
+
 	private class TAdapter extends KeyAdapter {
-		
-		//Spieler soll sich nicht weiterbewegen wenn man von der Taste geht
+
+		// Spieler soll sich nicht weiterbewegen wenn man von der Taste geht
 		public void keyReleased(KeyEvent e) {
 			player.keyReleased(e);
 		}
-		//Spieler bewegt sich bei Tastendruck
+
+		// Spieler bewegt sich bei Tastendruck
 		public void keyPressed(KeyEvent e) {
 			player.keyPressed(e);
 		}
-		
+
 	}
-	
-	class ScheduleTask extends TimerTask{
+
+	class ScheduleTask extends TimerTask {
 		public void run() {
-			//Spielerbewegung
+			// Spielerbewegung
 			player.move();
-			//Kaktusbewegung
+			// Kaktusbewegung
 			cactusMove();
-			//Kollusionscheck
+			// Kollusionscheck
 			checkCollusion();
+			//Win wenn man drei Schlüssel gesammelt hat
+			checkWin();
 			repaint();
-			
+
 		}
 	}
-	
+
 	public void checkCollusion() {
-		
-		//Schlüssel verschwindet bei Kollision mit Spieler
-		if(player.getRect().intersects(key.getRect())) {
-			//Schlüsselzähler geht nach oben
-			if(key.isVisible()) {
-				label.keys++;
-				label.collectKey();
+
+		// Schlüssel verschwindet bei Kollision mit Spieler
+		for (int i = 0; i <= 2; i++) {
+			if (player.getRect().intersects(keys[i].getRect())) {
+				// Schlüsselzähler geht nach oben
+				if (keys[i].isVisible()) {
+					label.keys++;
+					label.collectKey();
+				}
+				keys[i].setVisible(false);
 			}
-			key.setVisible(false);
 		}
-		//Fenster schließt sich bei Kollision mit Kaktus
-		if(cactus.getRect().intersects(player.getRect())) {
-			JOptionPane.showMessageDialog(null,"Game Over!");
+		if (cactus.getRect().intersects(player.getRect())) {
+			JOptionPane.showMessageDialog(null, "Game Over!");
 			System.exit(0);
 		}
 	}
-	
+
 	public void cactusMove() {
-		//Kaktus soll immer in die Richtung des Spielers laufen (funktioniert noch nicht)
-		cactus.setXDir((player.getX()-cactus.getX())/100);
-		cactus.setYDir((player.getY()-cactus.getY())/100);
+		// Kaktus soll immer in die Richtung des Spielers laufen (funktioniert noch
+		// nicht)
+		cactus.setXDir((player.getX() - cactus.getX()) / 100);
+		cactus.setYDir((player.getY() - cactus.getY()) / 100);
 		cactus.move();
+	}
+	
+	public void checkWin() {
+		//Wenn man drei Schlüssel gesammelt hat komm ein Pop up
+		if(label.keys == 3) {
+			JOptionPane.showMessageDialog(null, "You win!");
+			System.exit(0);
+		}
 	}
 
 }
