@@ -96,8 +96,10 @@ public class Board extends JPanel{
 				label.collectKey();
 			}
 			key.setVisible(false);
-			
-			//checkCollusion mit Kaktus fehlt noch
+		}
+		//Fenster schlieﬂt sich bei Kollision mit Kaktus
+		if(cactus.getRect().intersects(player.getRect())) {
+			System.exit(0);
 		}
 	}
 	
