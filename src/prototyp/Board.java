@@ -4,7 +4,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JPanel;
 import javax.swing.JOptionPane;
-
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.awt.Color;
@@ -18,6 +18,7 @@ public class Board extends JPanel {
 	Player player;
 	Key[] keys;
 	Label label = new Label();
+	Random rand = new Random();
 
 	public Board() {
 
@@ -37,9 +38,9 @@ public class Board extends JPanel {
 	public void gameInit() {
 		// neuer Kaktus
 		cactus = new Cactus();
-		// drei Schlüssel an Random Positionen (funktioniert nicht immer)
+		// drei Schlüssel an Random Positionen
 		for (int i = 0; i <= 2; i++) {
-			keys[i] = new Key((int)Math.random()*800, (int)Math.random()*600);
+			keys[i] = new Key(rand.nextInt((740 - 2) + 1) + 2, rand.nextInt((490 - 2) + 1) + 2);
 		}
 		// neuer Spieler
 		player = new Player();
