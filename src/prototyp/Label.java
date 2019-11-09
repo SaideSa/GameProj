@@ -15,6 +15,11 @@ public class Label extends JLabel{
 		keyCounter.setText("Schlüssel: " + keys);;
 	}
 	
+	public void restart() {
+		keys = 0;
+		keyCounter.setText("Schlüssel: " + keys);
+	}
+	
 	
 
 }

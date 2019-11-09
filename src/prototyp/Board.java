@@ -44,6 +44,8 @@ public class Board extends JPanel {
 		}
 		// neuer Spieler
 		player = new Player();
+		label.restart();
+		
 	}
 
 	public void paint(Graphics g) {
@@ -108,8 +110,11 @@ public class Board extends JPanel {
 			}
 		}
 		if (cactus.getRect().intersects(player.getRect())) {
-			JOptionPane.showMessageDialog(null, "Game Over!");
-			System.exit(0);
+			if(JOptionPane.showConfirmDialog(null, "Game Over! Restart?", "WARNING", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+				gameInit();
+			}else {
+				System.exit(0);
+			}
 		}
 	}
 
@@ -135,8 +140,11 @@ public class Board extends JPanel {
 	public void checkWin() {
 		//Wenn man drei Schlüssel gesammelt hat komm ein Pop up
 		if(label.keys == 3) {
-			JOptionPane.showMessageDialog(null, "You win!");
-			System.exit(0);
+			if(JOptionPane.showConfirmDialog(null, "You Win! Restart?", "WARNING", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+				gameInit();
+			}else {
+				System.exit(0);
+			}
 		}
 	}
 
