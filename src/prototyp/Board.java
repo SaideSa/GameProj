@@ -17,7 +17,8 @@ public class Board extends JPanel {
 	Cactus cactus;
 	Player player;
 	Key[] keys;
-	Fireball fireball;
+//	Fireball fireball;
+	Bomb bomb;
 	Label label = new Label();
 	Random rand = new Random();
 
@@ -29,6 +30,7 @@ public class Board extends JPanel {
 		this.setBackground(Color.ORANGE);
 		this.add(label.keyCounter);
 		this.add(label.winLoss);
+		
 
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new ScheduleTask(), 1000, 10);
@@ -42,11 +44,13 @@ public class Board extends JPanel {
 		cactus = new Cactus();
 		// drei Schlüssel an Random Positionen
 		for (int i = 0; i <= 2; i++) {
-			keys[i] = new Key(rand.nextInt((740 - 2) + 1) + 2, rand.nextInt((490 - 10) + 1) + 10);
+			keys[i] = new Key(rand.nextInt((1326 - 2) + 1) + 2, rand.nextInt((658 - 2) + 1) + 2);
+//			keys[i] = new Key(rand.nextInt((740 - 2) + 1) + 2, rand.nextInt((490 - 2) + 1) + 2);
 		}
 		// neuer Spieler
 		player = new Player();
-		fireball = new Fireball();
+//		fireball = new Fireball();
+		bomb = new Bomb();
 		label.restart();
 
 	}
@@ -67,11 +71,18 @@ public class Board extends JPanel {
 						this);
 			}
 		}
-		if (fireball.isShot()) {
-			g.drawImage(fireball.getImage(), fireball.getX(), fireball.getY(), fireball.getWidth(),
-					fireball.getHeight(), this);
+		
+//		if(fireball.shot) {
+//			g.drawImage(fireball.getImage(), fireball.getX(), fireball.getY(), fireball.getWidth(), fireball.getHeight(), this);
+//			
+//		}
+		
+		//Bombe zeichnen
+		if(bomb.dropped){
+			g.drawImage(bomb.getImage(), bomb.getX(), bomb.getY(), bomb.getWidth(), bomb.getHeight(), this);
 		}
-
+	
+	
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
 	}
@@ -86,12 +97,8 @@ public class Board extends JPanel {
 		// Spieler bewegt sich bei Tastendruck
 		public void keyPressed(KeyEvent e) {
 			player.keyPressed(e);
-			fireball.shot(e);
-		}
-
-		public void setFireball() {
-			fireball.x = player.getX();
-			fireball.y = player.getY();
+//			fireball.shot(e, player.getX(), player.getY());
+			bomb.keyPressed(e, player.getX(), player.getY());
 		}
 
 	}
@@ -102,8 +109,6 @@ public class Board extends JPanel {
 			player.move();
 			// Kaktusbewegung
 			cactusMove();
-//			// Schießen
-			shoot();
 			// Kollusionscheck
 			checkCollusion();
 			// Win wenn man drei Schlüssel gesammelt hat
@@ -128,6 +133,8 @@ public class Board extends JPanel {
 		}
 		if (!cactus.isDestroyed()) {
 			if (cactus.getRect().intersects(player.getRect())) {
+			//if((player.getX() == cactus.getX()) && ((player.getY() + 80) == (cactus.getY() + 120))){ 
+			//if ((player.getX() - 10) < cactus.getX() && (cactus.getX() < (player.getX() + 10)) && (player.getY() - 10) < cactus.getY() && (cactus.getY() < (player.getY() + 10))) {
 				if (JOptionPane.showConfirmDialog(null, "Game Over! Restart?", "WARNING",
 						JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					label.lose();
@@ -137,10 +144,18 @@ public class Board extends JPanel {
 				}
 			}
 		}
-		if (fireball.isShot()) {
-			if (fireball.getRect().intersects(cactus.getRect())) {
+		
+//		if(fireball.shot) {
+//			if(fireball.getRect().intersects(cactus.getRect())) {
+//				cactus.setDestroyed(true);
+//				fireball.setShot(false);
+//			}
+//		}
+		
+		if(bomb.dropped) {
+			if(cactus.getRect().intersects(bomb.getRect())) {
 				cactus.setDestroyed(true);
-				fireball.setShot(false);
+				bomb.dropped = false;
 			}
 		}
 	}
@@ -159,26 +174,7 @@ public class Board extends JPanel {
 		} else {
 			cactus.setYDir(0);
 		}
-
 		cactus.move();
-	}
-
-	public void shoot() {
-//		fireball.setXDir(2);
-//		fireball.setYDir(2);
-		int X = cactus.getX() - fireball.getX();
-		int Y = cactus.getY() - fireball.getY();
-		if (X != 0) {
-			fireball.setXDir(X / Math.abs(X));
-		} else {
-			fireball.setXDir(0);
-		}
-		if (Y != 0) {
-			fireball.setYDir(Y / Math.abs(Y));
-		} else {
-			fireball.setYDir(0);
-		}
-		fireball.move();
 	}
 
 	public void checkWin() {

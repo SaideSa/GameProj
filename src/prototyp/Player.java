@@ -29,14 +29,14 @@ public class Player extends Sprite{
 		if( x<=2) {
 			x = 2;
 		}
-		if(x>=740) {
-			x=740;
+		if(x>=1310) {
+			x=1310;
 		}
 		if( y<=2) {
 			y = 2;
 		}
-		if(y>=490) {
-			y = 490;
+		if(y>=680) {
+			y = 680;
 		}
 		
 	}

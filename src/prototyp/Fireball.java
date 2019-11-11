@@ -1,12 +1,11 @@
 package prototyp;
 
-import javax.swing.ImageIcon;
 import java.awt.event.KeyEvent;
+import javax.swing.ImageIcon;
 
 public class Fireball extends Sprite{
 	
-	int xdir;
-	int ydir;
+	int dx;
 	boolean shot;
 	
 	public Fireball() {
@@ -16,30 +15,26 @@ public class Fireball extends Sprite{
 		
 		width = image.getWidth(null);
 		height = image.getHeight(null);
-		shot = false;
 		
-//		resetState();
+		shot = false;
 	}
 	
-	public void move() {
-		x+=xdir;
-		y+=ydir;
+	public void move(int x, int y) {
+		this.x = x;
+		this.y = y;
+		x+=dx;
 	}
 	
-	public void setXDir(int x) {
-		xdir = x;
-	}
-	public void setYDir(int y) {
-		//Festlegen Y-Richtung
-		ydir = y;
-	}
-
-	public int getYDir() {
-		return ydir;
-	}
-
-	public int getXDir() {
-		return xdir;
+	public void shot(KeyEvent e, int x, int y) {
+		int key = e.getKeyCode();
+		if(key == KeyEvent.VK_SPACE) {
+			this.setShot(true);
+			dx = 2;
+		}
+		while(this.shot) {
+			this.move(x, y);
+		}
+		
 	}
 	
 	public boolean isShot() {
@@ -49,16 +44,6 @@ public class Fireball extends Sprite{
 	public void setShot(boolean shot) {
 		this.shot = shot;
 	}
-	
-	public void shot(KeyEvent e) {
-		int key = e.getKeyCode();
-		if(key == KeyEvent.VK_SPACE) {
-			this.shot = true;
-		}
-	}
-//	public void resetState() {
-//		x = 100;
-//		y = 100;	
-//	}
+
 
 }
