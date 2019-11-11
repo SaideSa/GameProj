@@ -3,7 +3,6 @@ package prototyp;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JPanel;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import java.util.Random;
 import java.util.Timer;
@@ -18,6 +17,7 @@ public class Board extends JPanel {
 	Cactus cactus;
 	Player player;
 	Key[] keys;
+	Fireball fireball;
 	Label label = new Label();
 	Random rand = new Random();
 
@@ -46,15 +46,18 @@ public class Board extends JPanel {
 		}
 		// neuer Spieler
 		player = new Player();
+		fireball = new Fireball();
 		label.restart();
-		
+
 	}
 
 	public void paint(Graphics g) {
 		super.paint(g);
 
 		// Kaktus zeichnen
-		g.drawImage(cactus.getImage(), cactus.getX(), cactus.getY(), cactus.getWidth(), cactus.getHeight(), this);
+		if (!cactus.isDestroyed()) {
+			g.drawImage(cactus.getImage(), cactus.getX(), cactus.getY(), cactus.getWidth(), cactus.getHeight(), this);
+		}
 		// Spieler zeichnen
 		g.drawImage(player.getImage(), player.getX(), player.getY(), player.getWidth(), player.getHeight(), this);
 		// Schlüssel nur zeichnen wenn er noch nicht eingesammelt wurde
@@ -63,6 +66,10 @@ public class Board extends JPanel {
 				g.drawImage(keys[i].getImage(), keys[i].getX(), keys[i].getY(), keys[i].getWidth(), keys[i].getHeight(),
 						this);
 			}
+		}
+		if (fireball.isShot()) {
+			g.drawImage(fireball.getImage(), fireball.getX(), fireball.getY(), fireball.getWidth(),
+					fireball.getHeight(), this);
 		}
 
 		Toolkit.getDefaultToolkit().sync();
@@ -79,6 +86,12 @@ public class Board extends JPanel {
 		// Spieler bewegt sich bei Tastendruck
 		public void keyPressed(KeyEvent e) {
 			player.keyPressed(e);
+			fireball.shot(e);
+		}
+
+		public void setFireball() {
+			fireball.x = player.getX();
+			fireball.y = player.getY();
 		}
 
 	}
@@ -89,9 +102,11 @@ public class Board extends JPanel {
 			player.move();
 			// Kaktusbewegung
 			cactusMove();
+//			// Schießen
+			shoot();
 			// Kollusionscheck
 			checkCollusion();
-			//Win wenn man drei Schlüssel gesammelt hat
+			// Win wenn man drei Schlüssel gesammelt hat
 			checkWin();
 			repaint();
 
@@ -111,42 +126,69 @@ public class Board extends JPanel {
 				keys[i].setVisible(false);
 			}
 		}
-		if (cactus.getRect().intersects(player.getRect())) {
-			if(JOptionPane.showConfirmDialog(null, "Game Over! Restart?", "LOSER", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
-				label.lose();
-				gameInit();
-			}else {
-				System.exit(0);
+		if (!cactus.isDestroyed()) {
+			if (cactus.getRect().intersects(player.getRect())) {
+				if (JOptionPane.showConfirmDialog(null, "Game Over! Restart?", "WARNING",
+						JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					label.lose();
+					gameInit();
+				} else {
+					System.exit(0);
+				}
+			}
+		}
+		if (fireball.isShot()) {
+			if (fireball.getRect().intersects(cactus.getRect())) {
+				cactus.setDestroyed(true);
+				fireball.setShot(false);
 			}
 		}
 	}
 
 	public void cactusMove() {
-		// Kaktus soll immer in die Richtung des Spielers laufen (funktioniert noch
-		// nicht)
+		// Kaktus soll immer in die Richtung des Spielers laufen
 		int X = player.getX() - cactus.getX();
 		int Y = player.getY() - cactus.getY();
-		if(X != 0) {
+		if (X != 0) {
 			cactus.setXDir(X / Math.abs(X));
-		}else {
+		} else {
 			cactus.setXDir(0);
 		}
-		if(Y != 0) {
+		if (Y != 0) {
 			cactus.setYDir(Y / Math.abs(Y));
-		}else{
+		} else {
 			cactus.setYDir(0);
 		}
-		
+
 		cactus.move();
 	}
-	
+
+	public void shoot() {
+//		fireball.setXDir(2);
+//		fireball.setYDir(2);
+		int X = cactus.getX() - fireball.getX();
+		int Y = cactus.getY() - fireball.getY();
+		if (X != 0) {
+			fireball.setXDir(X / Math.abs(X));
+		} else {
+			fireball.setXDir(0);
+		}
+		if (Y != 0) {
+			fireball.setYDir(Y / Math.abs(Y));
+		} else {
+			fireball.setYDir(0);
+		}
+		fireball.move();
+	}
+
 	public void checkWin() {
-		//Wenn man drei Schlüssel gesammelt hat komm ein Pop up
-		if(label.keys == 3) {
-			if(JOptionPane.showConfirmDialog(null, "You Win! Restart?", "WINNER", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+		// Wenn man drei Schlüssel gesammelt hat komm ein Pop up
+		if (label.keys == 3) {
+			if (JOptionPane.showConfirmDialog(null, "You Win! Restart?", "WARNING",
+					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 				label.win();
 				gameInit();
-			}else {
+			} else {
 				System.exit(0);
 			}
 		}
