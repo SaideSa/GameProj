@@ -42,7 +42,7 @@ public class Board extends JPanel {
 		cactus = new Cactus();
 		// drei Schlüssel an Random Positionen
 		for (int i = 0; i <= 2; i++) {
-			keys[i] = new Key(rand.nextInt((740 - 2) + 1) + 2, rand.nextInt((490 - 2) + 1) + 2);
+			keys[i] = new Key(rand.nextInt((740 - 2) + 1) + 2, rand.nextInt((490 - 10) + 1) + 10);
 		}
 		// neuer Spieler
 		player = new Player();
