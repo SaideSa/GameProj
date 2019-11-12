@@ -9,6 +9,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 
 public class Board extends JPanel {
@@ -132,9 +133,12 @@ public class Board extends JPanel {
 			}
 		}
 		if (!cactus.isDestroyed()) {
-			if (cactus.getRect().intersects(player.getRect())) {
-			//if((player.getX() == cactus.getX()) && ((player.getY() + 80) == (cactus.getY() + 120))){ 
-			//if ((player.getX() - 10) < cactus.getX() && (cactus.getX() < (player.getX() + 10)) && (player.getY() - 10) < cactus.getY() && (cactus.getY() < (player.getY() + 10))) {
+			//zwei kleine Rechtecke unten an den Figuren
+			Rectangle p = new Rectangle(player.getX()+20, player.getY()+75, 10, 10);
+			Rectangle c = new Rectangle(cactus.getX()+43, cactus.getY()+115, 10, 10);
+			//wenn die Rechtecke sich überschneiden = Kollusion --> Kaktus & Player
+			//können "hintereinander" laufen
+			if(p.intersects(c)) {
 				if (JOptionPane.showConfirmDialog(null, "Game Over! Restart?", "WARNING",
 						JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					label.lose();
@@ -162,8 +166,9 @@ public class Board extends JPanel {
 
 	public void cactusMove() {
 		// Kaktus soll immer in die Richtung des Spielers laufen
-		int X = player.getX() - cactus.getX();
-		int Y = player.getY() - cactus.getY();
+		int X = player.getX() - cactus.getX() - 15;
+		int Y = (player.getY()+player.getHeight()) - (cactus.getY()+cactus.getHeight());
+		
 		if (X != 0) {
 			cactus.setXDir(X / Math.abs(X));
 		} else {
