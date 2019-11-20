@@ -45,19 +45,19 @@ public class Player extends Sprite{
 		int key = e.getKeyCode();
 		
 		//Spielerbewegung
-		if(key == KeyEvent.VK_LEFT) {
+		if(key == KeyEvent.VK_A) {
 			dx = -3;
 		}
 		
-		if(key == KeyEvent.VK_RIGHT) {
+		if(key == KeyEvent.VK_D) {
 			dx = 3;
 		}
 		
-		if(key == KeyEvent.VK_DOWN) {
+		if(key == KeyEvent.VK_S) {
 			dy = 3;
 		}
 		
-		if(key == KeyEvent.VK_UP) {
+		if(key == KeyEvent.VK_W) {
 			dy = -3;
 		}
 	}
@@ -66,19 +66,19 @@ public class Player extends Sprite{
 		int key = e.getKeyCode();
 		
 		//Spielerbewegung Stopp
-		if(key == KeyEvent.VK_LEFT) {
+		if(key == KeyEvent.VK_A) {
 			dx = 0;
 		}
 		
-		if(key == KeyEvent.VK_RIGHT) {
+		if(key == KeyEvent.VK_D) {
 			dx = 0;
 		}
 		
-		if(key == KeyEvent.VK_DOWN) {
+		if(key == KeyEvent.VK_S) {
 			dy = 0;
 		}
 		
-		if(key == KeyEvent.VK_UP) {
+		if(key == KeyEvent.VK_W) {
 			dy = 0;
 		}
 	}
