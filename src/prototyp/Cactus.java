@@ -1,11 +1,13 @@
 package prototyp;
 
+import java.util.Random;
 import javax.swing.ImageIcon;
 
 public class Cactus extends Sprite {
 
 	private int xdir;	//X-Richtung
 	private int ydir;	//Y-Richtung
+	Random rand = new Random();
 
 	boolean destroyed;
 
@@ -38,17 +40,14 @@ public class Cactus extends Sprite {
 
 	public void resetState() {
 		//Startposition
-		x = 700;
-		y = 2;
+		x = rand.nextInt((1400 - 1300) + 1) + 1300;
+		y = rand.nextInt((800 - 2) + 1) + 2;
 	}
 
 	public void move() {
 		//Kaktusbewegung
 		x += xdir;
 		y += ydir;
-		
-		//eig unnötig
-		System.out.println(xdir + " " +  ydir);
 	}
 
 	public void setXDir(int x) {

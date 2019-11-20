@@ -13,7 +13,10 @@ public class Massaker extends JFrame{
 		this.setLocationRelativeTo(null);
 		this.setIgnoreRepaint(true);
 		this.setResizable(false);
+		this.setUndecorated(true);
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setVisible(true);
+		
 		
 	}
 	
